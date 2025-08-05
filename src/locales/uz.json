@@ -1,5 +1,9 @@
 {
     "modal": {
         "title": "Qaysi tilda davom ettirmoqchisiz?"
-    }
+    },
+    "chat": {
+        "reception": "Qabulxona",
+        "sendMessage": "Xabar yuboring"
+      }
 }

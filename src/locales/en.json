@@ -1,5 +1,9 @@
 {
     "modal": {
         "title": "Which language would you like to continue in?"
-    }
+    },
+    "chat": {
+    "reception": "Reception",
+    "sendMessage": "Send Message"
+  }
 }
