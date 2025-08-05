@@ -1,0 +1,47 @@
+.chat{
+    &-block{
+        background: #fff;
+        width: 500px;
+        min-height: 100px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 20px;
+        z-index: 1;
+        &-top{
+            border-bottom: 2px solid #bbb;
+            padding: 15px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 40px;
+            & span{
+                color: #5a5a5a;
+                font-size: 20px;
+                font-weight: 800;
+            }
+        }
+        &-main{
+            height: 50vh;
+        }
+        &-input{
+            border-top: 1px solid #bbb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            gap: 10px;
+            & .sendIcon{
+                cursor: pointer;
+            }
+            & input{
+                background: transparent;
+               padding: 5px;
+               border: none;font-size: 17px;
+               width: 100%;
+                outline: none;
+            }
+        }
+    }
+}
