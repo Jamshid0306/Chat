@@ -1,0 +1,119 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 420px;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+  
+    h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      text-align: center;
+      color: #333;
+    }
+  
+    .subtitle {
+      margin: 0 0 20px;
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+    }
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #444;
+    }
+  
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      background: #fff;
+  
+      &:focus {
+        outline: none;
+        border-color: #4361ee;
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      }
+    }
+  
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: #4361ee;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+  
+    &:hover {
+      background: #3a56d4;
+    }
+  
+    &:disabled {
+      background: #a5b4fc;
+      cursor: not-allowed;
+    }
+  }
+  
+  .loader {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .iti {
+    width: 100%;
+  }
+  
+  
+  .iti__selected-flag {
+    padding: 0 8px 0 12px;
+  }
+  .error-message {
+    color: #ff4444;
+    background-color: #ffebee;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border: 1px solid rgba(255, 68, 68, 0.2);
+  }

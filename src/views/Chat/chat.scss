@@ -17,13 +17,14 @@
             gap: 10px;
             padding-left: 40px;
             & span{
-                color: #5a5a5a;
+                color: #fff;
                 font-size: 20px;
                 font-weight: 800;
             }
         }
         &-main{
             height: 50vh;
+            overflow-y: auto;
         }
         &-input{
             border-top: 1px solid #bbb;
