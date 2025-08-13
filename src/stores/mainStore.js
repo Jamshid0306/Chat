@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import router from "@/router";
+axios.defaults.baseURL = import.meta.env.VITE_URL;
+axios.defaults.headers.common["Content-Type"] = "application/json";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -15,11 +18,7 @@ export const useAuthStore = defineStore("auth", {
       this.isLoading = true;
       this.loginError = "";
       try {
-        await axios.post(
-          "https://0c718146b181.ngrok-free.app/auth/send-code",
-          { phone_number: phone },
-          { headers: { "Content-Type": "application/json" } }
-        );
+        await axios.post("/auth/send-code", { phone_number: phone });
         return true;
       } catch (error) {
         this.loginError = error.response?.data?.message || "Kod yuborilmadi";
@@ -33,11 +32,10 @@ export const useAuthStore = defineStore("auth", {
       this.isLoading = true;
       this.loginError = "";
       try {
-        const res = await axios.post(
-          "https://0c718146b181.ngrok-free.app/auth/verify-code",
-          { phone_number: phone, code: code },
-          { headers: { "Content-Type": "application/json" } }
-        );
+        const res = await axios.post("/auth/verify-code", {
+          phone_number: phone,
+          code: code,
+        });
         if (res.status === 200) {
           this.isLoggedIn = true;
           localStorage.setItem("token", res.data.access_token);
@@ -53,19 +51,14 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-    async sendType(type) {
+    async sendType(type = "RECEPTION") {
       try {
         const token = localStorage.getItem("token");
         if (!token) return;
         const response = await axios.post(
-          "https://0c718146b181.ngrok-free.app/user/chats",
-          { type: type },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
+          "/user/chats",
+          { type },
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         if (response.status === 200) {
           this.chat_id = response.data.id;
@@ -84,18 +77,15 @@ export const useAuthStore = defineStore("auth", {
         const token = localStorage.getItem("token");
         if (!token || !this.chat_id) return;
         const response = await axios.get(
-          `https://0c718146b181.ngrok-free.app/user/chats/${this.chat_id}/messages`,
+          `/user/chats/${this.chat_id}/messages`,
           {
             params: { skip, limit },
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
               "ngrok-skip-browser-warning": "true",
             },
           }
         );
-        console.log(response.data);
-
         this.messages = response.data || [];
         localStorage.setItem("messages", JSON.stringify(this.messages));
         return response.data;
@@ -110,14 +100,9 @@ export const useAuthStore = defineStore("auth", {
         const token = localStorage.getItem("token");
         if (!token || !this.chat_id) return;
         const response = await axios.post(
-          `https://0c718146b181.ngrok-free.app/user/chats/${this.chat_id}/messages`,
-          { content: content },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
+          `/user/chats/${this.chat_id}/messages`,
+          { content },
+          { headers: { Authorization: `Bearer ${token}` } }
         );
         if (response.status === 200) {
           this.messages.push(response.data);
@@ -129,6 +114,7 @@ export const useAuthStore = defineStore("auth", {
         return null;
       }
     },
+
     async pollNewMessages() {
       try {
         const token = localStorage.getItem("token");
@@ -137,15 +123,12 @@ export const useAuthStore = defineStore("auth", {
         const lastId = this.messages.length
           ? this.messages[this.messages.length - 1].id
           : 0;
-        console.log(this.chat_id);
-        
+
         const res = await axios.get(
-          `https://0c718146b181.ngrok-free.app/user/chats/${this.chat_id}/messages?since_id=${lastId}`,
+          `/user/chats/${this.chat_id}/messages`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "ngrok-skip-browser-warning": "true",
-            },
+            params: { since_id: lastId },
+            headers: { Authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": "true" },
           }
         );
 
@@ -153,12 +136,62 @@ export const useAuthStore = defineStore("auth", {
           this.messages.push(...res.data);
         }
       } catch (err) {
-        console.error(
-          "pollNewMessages xatosi:",
-          err.response?.data || err.message
-        );
+        console.error("pollNewMessages xatosi:", err.response?.data || err.message);
       }
     },
+    async login(phone, password) {
+      this.isLoading = true;
+      this.loginError = "";
+      try {
+        const res = await axios.post("/auth/login", {
+          phone_number: phone,
+          password: password
+        });
+    
+        if (res.status === 200) {
+          this.isLoggedIn = true;
+          localStorage.setItem("token", res.data.access_token);
+          await this.sendType();
+          router.push("/chat"); // login bo‘lsa /chat sahifasiga o‘tkazish
+          return true;
+        }
+    
+        this.loginError = res.data.message || "Kirish muvaffaqiyatsiz";
+        return false;
+      } catch (error) {
+        this.loginError = error.response?.data?.message || "Kirishda xatolik";
+        return false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async adminLogin(username, password) {
+      this.isLoading = true;
+      this.loginError = "";
+      try {
+        const res = await axios.post("/admin/login", {
+          username,
+          password
+        });
+    
+        if (res.status === 200) {
+          this.isLoggedIn = true;
+          localStorage.setItem("admin_token", res.data.access_token);
+          router.push("/admin/dashboard"); // admin panelga yo‘naltirish
+          return true;
+        }
+    
+        this.loginError = res.data.message || "Kirish muvaffaqiyatsiz";
+        return false;
+      } catch (error) {
+        this.loginError = error.response?.data?.message || "Kirishda xatolik";
+        return false;
+      } finally {
+        this.isLoading = false;
+      }
+    }
+    
+    
   },
   persist: true,
 });

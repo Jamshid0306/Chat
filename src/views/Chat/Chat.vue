@@ -28,6 +28,7 @@ const sendMessage = async () => {
 };
 
 onMounted(async () => {
+  await store.sendType('RECEPTION')
   await store.getMessages();
   scrollToBottom();
   intervalId = setInterval(async () => {
@@ -54,11 +55,19 @@ onUnmounted(() => {
           <div
             v-for="msg in store.messages"
             :key="msg.id"
-            :class="['message', msg.sender.type === 'user' ? 'user' : 'employee']"
+            :class="[
+              'message',
+              msg.sender.type === 'user' ? 'user' : 'employee',
+            ]"
           >
             <div class="message-content">{{ msg.content }}</div>
             <div class="message-time">
-              {{ new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
+              {{
+                new Date(msg.created_at).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              }}
             </div>
           </div>
         </transition-group>
@@ -71,12 +80,16 @@ onUnmounted(() => {
           :placeholder="t('chat.sendMessage')"
           @keyup.enter="sendMessage"
         />
-        <SendIcon class="sendIcon" :size="35" :color="'rgb(0, 162, 255)'" @click="sendMessage" />
+        <SendIcon
+          class="sendIcon"
+          :size="35"
+          :color="'rgb(0, 162, 255)'"
+          @click="sendMessage"
+        />
       </div>
     </div>
   </section>
 </template>
-
 
 <style scoped>
 .chat {
@@ -86,14 +99,17 @@ onUnmounted(() => {
 }
 
 .chat-block {
-  width: 100%;
   max-width: 500px;
+  width: 100%;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  @media screen and (max-width: 400px) {
+    margin-top: 30px;
+  }
 }
 
 .chat-block-top {
@@ -162,15 +178,23 @@ onUnmounted(() => {
   transform: scale(1.1);
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.3s ease;
 }
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

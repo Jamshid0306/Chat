@@ -35,28 +35,28 @@ function changeType(selected) {
     <div class="buttons">
       <button @click="changeLanguage('uz')">
         <img src="@/assets/images/flags/uz.png" alt="Flag" />
-        <span>Uzbekcha</span>
+        <span>{{ t("languages.uz") }}</span>
       </button>
       <button @click="changeLanguage('ru')">
         <img src="@/assets/images/flags/ru.png" alt="Flag" />
-        <span>Русский</span>
+        <span>{{ t("languages.ru") }}</span>
       </button>
       <button @click="changeLanguage('en')">
         <img src="@/assets/images/flags/en.png" alt="Flag" />
-        <span>English</span>
+        <span>{{ t("languages.en") }}</span>
       </button>
     </div>
   </div>
   <div v-if="!props.showSelect" class="modal-overlay"></div>
 
   <div v-if="props.showSelect" class="modal">
-    <h1 class="modal-title">Siz kim bilan bog'lanmoqchisiz?</h1>
+    <h1 class="modal-title">{{ t("modal.selectTypeTitle") }}</h1>
     <div class="buttons">
       <button @click="changeType('AI')">
-        <span>AI</span>
+        <span>{{ t("modal.ai") }}</span>
       </button>
       <button @click="changeType('RECEPTION')">
-        <span>Reception</span>
+        <span>{{ t("modal.reception") }}</span>
       </button>
     </div>
   </div>

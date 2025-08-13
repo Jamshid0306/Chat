@@ -1,9 +1,21 @@
 {
-    "modal": {
-        "title": "Which language would you like to continue in?"
-    },
-    "chat": {
+  "modal": {
+    "title": "Which language would you like to continue in?",
+    "selectTypeTitle": "Who do you want to contact?",
+    "ai": "AI",
+    "reception": "Reception"
+  },
+  "chat": {
     "reception": "Reception",
     "sendMessage": "Send Message"
+  },
+  "languages": {
+    "uz": "Uzbek",
+    "ru": "Russian",
+    "en": "English"
+  },
+  "buttons": {
+    "changeLanguage": "Change Language",
+    "chooseType": "Choose Type"
   }
 }

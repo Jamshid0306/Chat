@@ -1,9 +1,21 @@
 {
-    "modal": {
-        "title": "Qaysi tilda davom ettirmoqchisiz?"
-    },
-    "chat": {
-        "reception": "Qabulxona",
-        "sendMessage": "Xabar yuboring"
-      }
+  "modal": {
+    "title": "Qaysi tilda davom ettirmoqchisiz?",
+    "selectTypeTitle": "Siz kim bilan bog'lanmoqchisiz?",
+    "ai": "AI",
+    "reception": "Resepsion"
+  },
+  "chat": {
+    "reception": "Qabulxona",
+    "sendMessage": "Xabar yuboring"
+  },
+  "languages": {
+    "uz": "O‘zbekcha",
+    "ru": "Ruscha",
+    "en": "Inglizcha"
+  },
+  "buttons": {
+    "changeLanguage": "Tilni o‘zgartirish",
+    "chooseType": "Turini tanlash"
+  }
 }
