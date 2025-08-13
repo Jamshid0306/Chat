@@ -28,7 +28,7 @@ const sendMessage = async () => {
 };
 
 onMounted(async () => {
-  await store.sendType('RECEPTION')
+  await store.sendType("RECEPTION");
   await store.getMessages();
   scrollToBottom();
   intervalId = setInterval(async () => {
@@ -51,7 +51,12 @@ onUnmounted(() => {
       </div>
 
       <div class="chat-block-main" ref="messagesContainer">
-        <transition-group name="fade" tag="div">
+        <template v-if="store.messages.length === 0">
+          <div class="no-messages">
+            {{ t("chat.noMessages") }}
+          </div>
+        </template>
+        <transition-group v-else name="fade" tag="div">
           <div
             v-for="msg in store.messages"
             :key="msg.id"
@@ -69,10 +74,6 @@ onUnmounted(() => {
                 })
               }}
             </div>
-            <div>{{ new Date(msg.created_at).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}}</div>
           </div>
         </transition-group>
       </div>
@@ -130,6 +131,13 @@ onUnmounted(() => {
   padding: 10px;
 }
 
+.no-messages {
+  text-align: center;
+  color: gray;
+  margin-top: 50px;
+  font-size: 14px;
+  opacity: 0.8;
+}
 .message {
   margin: 8px 0;
   padding: 10px 14px;
@@ -150,8 +158,8 @@ onUnmounted(() => {
 }
 
 .message-time {
-  font-size: 12px;
-  color: gray;
+  font-size: 16px;
+  color: rgb(0, 0, 0);
   margin-top: 2px;
   text-align: right;
 }

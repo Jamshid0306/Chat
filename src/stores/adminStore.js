@@ -40,7 +40,6 @@ export const useAdminStore = defineStore("admin", {
           headers: this.getAdminHeaders(),
         });
         this.users = data;
-        console.log(data);
       } catch (err) {
         this.error = err;
       } finally {
