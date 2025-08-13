@@ -32,26 +32,23 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const userToken = localStorage.getItem("token")
-  const adminToken = localStorage.getItem("admin_token")
+  const userToken = localStorage.getItem("token");
+  const adminToken = localStorage.getItem("admin_token");
 
-  if (to.path.startsWith("/chat") && !userToken) {
-    return next("/")
+  if (to.path.startsWith("/chat") && !userToken) return next("/");
+  if (to.path.startsWith("/admin") && !adminToken) return next("/admin");
+
+  if (to.path.startsWith("/chat") && adminToken) {
+    localStorage.removeItem("admin_token");
+    return next("/");
+  }
+  if (to.path.startsWith("/admin") && userToken) {
+    localStorage.removeItem("token");
+    return next("/admin");
   }
 
-  if (to.path.startsWith("/admin/dashboard") && !adminToken) {
-    return next("/admin")
-  }
+  next();
+});
 
-  if (to.path.startsWith("/chat") && adminToken && !userToken) {
-    return next("/")
-  }
-
-  if (to.path.startsWith("/admin") && userToken && !adminToken) {
-    return next("/admin")
-  }
-
-  next()
-})
 
 export default router

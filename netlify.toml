@@ -1,10 +1,20 @@
+# Admin routelarni SPA uchun qayta yo‘naltirish
 [[redirects]]
   from = "/admin/*"
-  to = "/admin/:splat"
+  to = "/index.html"
   status = 200
-  force = false
 
+# Chat yoki boshqa SPA routelar uchun umumiy qayta yo‘naltirish
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Agar API so‘rovlari Netlify’dan o‘tsa (masalan /api/...),
+# backendga forward qilinishi uchun (ngrok yoki boshqa URL)
+# Mana bu qatorlarni faqat kerak bo‘lsa qo‘sh
+# [[redirects]]
+#   from = "/api/*"
+#   to = "https://3b7642139154.ngrok-free.app/api/:splat"
+#   status = 200
+#   force = true
