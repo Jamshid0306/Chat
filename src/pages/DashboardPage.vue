@@ -2,10 +2,11 @@
 import { ref, reactive, onMounted } from "vue";
 import { useAdminStore } from "../stores/adminStore";
 import axios from "axios";
-import { computed } from 'vue';
+import { computed } from "vue";
 
-const confirmedUsers = computed(() => store.users.filter(u => u.booking_status === 'confirmed'));
-
+const confirmedUsers = computed(() =>
+  store.users.filter((u) => u.booking_status === "confirmed")
+);
 
 const store = useAdminStore();
 const showForm = ref(false);
@@ -187,48 +188,51 @@ const onActionConfirm = async () => {
     <div v-if="store.error" class="error-text">
       {{ store.error.message || store.error }}
     </div>
-
-    <table v-if="store.users.length" class="users-table">
-      <thead>
-        <tr>
-          <th>Ism</th>
-          <th>Familiya</th>
-          <th>Otasining ismi</th>
-          <th>Telefon</th>
-          <th>Checkout sanasi</th>
-          <th style="width: 40px"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="item in store.users.filter(
-            (user) => user.booking_status === 'confirmed'
-          )"
-          :key="item.id"
-          @mouseenter="hoveredUserId = item.id"
-          @mouseleave="hoveredUserId = null"
-        >
-          <td>{{ item.first_name }}</td>
-          <td>{{ item.last_name }}</td>
-          <td>{{ item.patronymic || "-" }}</td>
-          <td>{{ item.phone_number }}</td>
-          <td>{{ formatDate(item.check_out_date) }}</td>
-          <div
-            class="del"
-            @click="openActionModal(item)"
-            v-show="hoveredUserId === item.id"
+    <div class="users-wrapper">
+      <table v-if="store.users.length" class="users-table">
+        <thead>
+          <tr>
+            <th>Ism</th>
+            <th>Familiya</th>
+            <th>Otasining ismi</th>
+            <th>Telefon</th>
+            <th>Checkout sanasi</th>
+            <th style="width: 40px"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="item in store.users.filter(
+              (user) => user.booking_status === 'confirmed'
+            )"
+            :key="item.id"
+            @mouseenter="hoveredUserId = item.id"
+            @mouseleave="hoveredUserId = null"
           >
-            ➔
-          </div>
-        </tr>
-      </tbody>
-    </table>
+            <td>{{ item.first_name }}</td>
+            <td>{{ item.last_name }}</td>
+            <td>{{ item.patronymic || "-" }}</td>
+            <td>{{ item.phone_number }}</td>
+            <td>{{ formatDate(item.check_out_date) }}</td>
+            <div
+              class="del"
+              @click="openActionModal(item)"
+              v-show="hoveredUserId === item.id"
+            >
+              ➔
+            </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div v-if="!store.loading && store.users.length === 0" class="no-users">
       Foydalanuvchilar topilmadi
     </div>
 
     <div v-if="showActionModal" class="modal">
-      <h2 class="modal-title">Foydalanuvchi uchun harakat tanlang</h2>
+      <h2 class="modal-title">
+        {{ selectedUser?.first_name }} uchun harakat tanlang
+      </h2>
       <div class="input-group">
         <label for="actionSelect">Harakat *</label>
         <select id="actionSelect" v-model="action">
@@ -241,7 +245,7 @@ const onActionConfirm = async () => {
         <label for="newCheckoutDate">Yangi checkout sanasi</label>
         <input type="date" id="newCheckoutDate" v-model="newCheckoutDate" />
       </div>
-      <div class="buttons" style="margin-top: 20px">
+      <div class="buttons2" style="margin-top: 20px">
         <button class="btn-cancel" @click="closeActionModal" type="button">
           Bekor qilish
         </button>
@@ -277,10 +281,10 @@ const onActionConfirm = async () => {
     color: #0056b3;
   }
 }
-tr{
+tr {
   position: relative;
 }
-tr:hover .del{
+tr:hover .del {
   opacity: 1;
 }
 
@@ -288,7 +292,7 @@ tr:hover .del{
   padding: 30px 15px;
   max-width: 900px;
   margin: 10px auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: #f9fafb;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -298,12 +302,17 @@ tr:hover .del{
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
 
     .title {
       font-size: 28px;
       font-weight: 800;
       color: #222;
       letter-spacing: 0.03em;
+      @media (max-width: 600px) {
+        font-size: 22px;
+      }
     }
     .btn-primary {
       background: linear-gradient(135deg, #5a9bf6, #2a74f4);
@@ -319,6 +328,10 @@ tr:hover .del{
       &:hover {
         background: linear-gradient(135deg, #2a74f4, #0053c9);
         box-shadow: 0 6px 20px rgba(0, 83, 201, 0.6);
+      }
+      @media (max-width: 600px) {
+        padding: 10px 18px;
+        font-size: 14px;
       }
     }
   }
@@ -342,6 +355,10 @@ tr:hover .del{
     z-index: 9999;
     width: 100%;
     max-width: 450px;
+    @media (max-width: 500px) {
+      padding: 24px 20px;
+      max-width: 90%;
+    }
 
     .modal-title {
       font-size: 24px;
@@ -350,6 +367,10 @@ tr:hover .del{
       text-align: center;
       color: #1f2937;
       letter-spacing: 0.02em;
+      @media (max-width: 500px) {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
     }
     form,
     .input-group {
@@ -362,6 +383,9 @@ tr:hover .del{
       margin-bottom: 3px;
       color: #374151;
       font-weight: 700;
+      @media (max-width: 500px) {
+        font-size: 14px;
+      }
     }
     input,
     select {
@@ -376,51 +400,30 @@ tr:hover .del{
         border-color: #3b82f6;
         box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
       }
-    }
-    .buttons2 {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 16px;
-      margin-top: 14px;
-      button {
-        padding: 14px 26px;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 16px;
-        cursor: pointer;
-        border: none;
-        transition: background-color 0.3s ease, color 0.3s ease;
-        &.btn-cancel {
-          background: #e5e7eb;
-          color: #6b7280;
-          &:hover {
-            background: #d1d5db;
-          }
-        }
-        &.btn-submit {
-          background: #2563eb;
-          color: white;
-          box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
-          &:hover {
-            background: #1e40af;
-          }
-        }
+      @media (max-width: 500px) {
+        padding: 12px 15px;
+        font-size: 15px;
       }
     }
   }
 
+  .users-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 20px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  }
+
   .users-table {
     width: 100%;
+    min-width: 600px;
     border-collapse: separate;
     border-spacing: 0 10px;
-    margin-top: 20px;
     font-size: 16px;
     font-weight: 600;
     color: #1f2937;
-    overflow: hidden;
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
     background: white;
 
     thead {
@@ -429,13 +432,19 @@ tr:hover .del{
       font-weight: 700;
       font-size: 17px;
       letter-spacing: 0.03em;
-      border-radius: 14px 14px 0 0;
+      @media (max-width: 600px) {
+        font-size: 15px;
+      }
     }
     th,
     td {
       padding: 14px 18px;
       text-align: left;
       vertical-align: middle;
+      @media (max-width: 600px) {
+        padding: 12px 15px;
+        font-size: 14px;
+      }
     }
     tbody tr {
       background: #f9fafb;
@@ -471,6 +480,9 @@ tr:hover .del{
     font-size: 18px;
     margin-top: 24px;
     font-weight: 600;
+    @media (max-width: 600px) {
+      font-size: 16px;
+    }
   }
 
   .loading-text {
@@ -486,4 +498,44 @@ tr:hover .del{
   }
 }
 
+.buttons2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  @media (max-width: 500px) {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  button {
+    padding: 14px 26px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    @media (max-width: 500px) {
+      padding: 12px 20px;
+      font-size: 14px;
+      width: 100%;
+    }
+    &.btn-cancel {
+      background: #e5e7eb;
+      color: #6b7280;
+      &:hover {
+        background: #d1d5db;
+      }
+    }
+    &.btn-submit {
+      background: #2563eb;
+      color: white;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+      &:hover {
+        background: #1e40af;
+      }
+    }
+  }
+}
 </style>

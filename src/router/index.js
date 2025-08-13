@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from "vue-router";
-import HomePage from "../pages/HomePage.vue";
+import { createRouter, createWebHistory } from "vue-router"
+import HomePage from "../pages/HomePage.vue"
+
 const routes = [
   {
     path: "/",
@@ -12,10 +13,9 @@ const routes = [
     component: HomePage,
     meta: { requiresAuth: true }
   },
-  
   {
     path: "/admin",
-    name: "admin",
+    name: "admin-login",
     component: () => import("@/pages/AdminPage.vue")
   },
   {
@@ -23,12 +23,35 @@ const routes = [
     name: "dashboard",
     component: () => import("@/pages/DashboardPage.vue"),
     meta: { requiresAuth: true }
-  },
-];
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
+})
 
-export default router;
+router.beforeEach((to, from, next) => {
+  const userToken = localStorage.getItem("token")
+  const adminToken = localStorage.getItem("admin_token")
+
+  if (to.path.startsWith("/chat") && !userToken) {
+    return next("/")
+  }
+
+  if (to.path.startsWith("/admin/dashboard") && !adminToken) {
+    return next("/admin")
+  }
+
+  if (to.path.startsWith("/chat") && adminToken && !userToken) {
+    return next("/")
+  }
+
+  if (to.path.startsWith("/admin") && userToken && !adminToken) {
+    return next("/admin")
+  }
+
+  next()
+})
+
+export default router

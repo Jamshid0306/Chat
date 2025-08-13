@@ -41,7 +41,6 @@ export const useAdminStore = defineStore("admin", {
         });
         this.users = data;
         console.log(data);
-        
       } catch (err) {
         this.error = err;
       } finally {
@@ -54,6 +53,8 @@ export const useAdminStore = defineStore("admin", {
         const { data } = await axios.post("/reception/users", userData, {
           headers: this.getAdminHeaders(),
         });
+        alert(`Userning paroli: ${data.generated_password}`);
+
         this.users.push(data);
       } catch (err) {
         this.error = err;
@@ -62,9 +63,13 @@ export const useAdminStore = defineStore("admin", {
 
     async updateUserCheckout(bookingId, newCheckoutISO) {
       try {
-        await axios.patch(`/reception/bookings/${bookingId}`, { check_out_date: newCheckoutISO }, {
-          headers: this.getAdminHeaders(),
-        });
+        await axios.patch(
+          `/reception/bookings/${bookingId}`,
+          { check_out_date: newCheckoutISO },
+          {
+            headers: this.getAdminHeaders(),
+          }
+        );
       } catch (err) {
         this.error = err;
         throw err;
@@ -72,25 +77,29 @@ export const useAdminStore = defineStore("admin", {
     },
     async completeBookingStatus(bookingId) {
       try {
-        await axios.patch(`/reception/bookings/${bookingId}`, { status: "completed" }, {
-          headers: this.getAdminHeaders(),
-        });
+        await axios.patch(
+          `/reception/bookings/${bookingId}`,
+          { status: "completed" },
+          {
+            headers: this.getAdminHeaders(),
+          }
+        );
         await this.fetchUsers();
       } catch (err) {
         this.error = err;
         throw err;
       }
     },
-    
-    
-
-    
 
     async confirmBookingStatus(bookingId) {
       try {
-        await axios.patch(`/reception/bookings/${bookingId}`, { status: "completed" }, {
-          headers: this.getAdminHeaders(),
-        });
+        await axios.patch(
+          `/reception/bookings/${bookingId}`,
+          { status: "completed" },
+          {
+            headers: this.getAdminHeaders(),
+          }
+        );
       } catch (err) {
         this.error = err;
         throw err;

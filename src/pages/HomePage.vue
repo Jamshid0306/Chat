@@ -9,7 +9,7 @@ import { useAuthStore } from "@/stores/mainStore"
 const authStore = useAuthStore()
 const { t } = useI18n()
 
-const showLoginModal = ref(!authStore.isLoggedIn)
+const showLoginModal = ref(!authStore.isLoggedIn || true)
 const showModal = ref(false)
 const modalType = ref(false)
 
