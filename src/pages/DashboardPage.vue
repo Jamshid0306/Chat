@@ -196,6 +196,7 @@ const onActionConfirm = async () => {
             <th>Familiya</th>
             <th>Otasining ismi</th>
             <th>Telefon</th>
+            <th>Parol</th>
             <th>Checkout sanasi</th>
             <th style="width: 40px"></th>
           </tr>
@@ -213,6 +214,7 @@ const onActionConfirm = async () => {
             <td>{{ item.last_name }}</td>
             <td>{{ item.patronymic || "-" }}</td>
             <td>{{ item.phone_number }}</td>
+            <td>{{ item.generated_password }}</td>
             <td>{{ formatDate(item.check_out_date) }}</td>
             <div
               class="del"

@@ -69,6 +69,10 @@ onUnmounted(() => {
                 })
               }}
             </div>
+            <div>{{ new Date(msg.created_at).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}}</div>
           </div>
         </transition-group>
       </div>
