@@ -2,20 +2,12 @@
   command = "npm run build"
   publish = "dist"
 
-# API proxy
-[[redirects]]
-  from = "/api/*"
-  to = "http://81.162.55.53:8000/:splat"
-  status = 200
-  force = true
-
-# Routing
 [[redirects]]
   from = "/admin/*"
-  to = "/index.html"
+  to = "./index.html"
   status = 200
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "./index.html"
   status = 200
