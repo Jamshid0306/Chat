@@ -14,7 +14,6 @@ const showModal = ref(false)
 const modalType = ref(false)
 if(authStore.isLoggedIn){
   showLoginModal.value = false;
-  console.log(2);
   
 }
 function closeLoginModal() {
