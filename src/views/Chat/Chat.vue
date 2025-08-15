@@ -43,60 +43,91 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="chat">
-    <div class="chat-block">
-      <div class="chat-block-top">
-        <UserIcon :size="35" />
-        <span>{{ t("chat.reception") }}</span>
-      </div>
-
-      <div class="chat-block-main" ref="messagesContainer">
-        <template v-if="store.messages.length === 0">
-          <div class="no-messages">
-            {{ t("chat.noMessages") }}
-          </div>
-        </template>
-        <transition-group v-else name="fade" tag="div">
-          <div
-            v-for="msg in store.messages"
-            :key="msg.id"
-            :class="[
-              'message',
-              msg.sender.type === 'user' ? 'user' : 'employee',
-            ]"
-          >
-            <div class="message-content">{{ msg.content }}</div>
-            <div class="message-time">
-              {{
-                new Date(msg.created_at).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              }}
-            </div>
-          </div>
-        </transition-group>
-      </div>
-
-      <div class="chat-block-input">
-        <input
-          type="text"
-          v-model="newMessage"
-          :placeholder="t('chat.sendMessage')"
-          @keyup.enter="sendMessage"
-        />
-        <SendIcon
-          class="sendIcon"
-          :size="35"
-          :color="'rgb(0, 162, 255)'"
-          @click="sendMessage"
-        />
+<section class="chat">
+  <div class="chat-block">
+    <div class="chat-block-top">
+      <UserIcon :size="35" />
+      <span>{{ t("chat.reception") }}</span>
+      <div class="chat-buttons">
+        <button class="styled-btn" @click="$emit('openLanguageModal')">
+          🌐 {{ t("buttons.changeLanguage") }}
+        </button>
+        <!-- <button class="styled-btn" @click="$emit('openTypeModal')">
+          📋 {{ t("buttons.chooseType") }}
+        </button> -->
       </div>
     </div>
-  </section>
+
+    <div class="chat-block-main" ref="messagesContainer">
+      <template v-if="store.messages.length === 0">
+        <div class="no-messages">
+          {{ t("chat.noMessages") }}
+        </div>
+      </template>
+      <transition-group v-else name="fade" tag="div">
+        <div
+          v-for="msg in store.messages"
+          :key="msg.id"
+          :class="[
+            'message',
+            msg.sender.type === 'user' ? 'user' : 'employee',
+          ]"
+        >
+          <div class="message-content">{{ msg.content }}</div>
+          <div class="message-time">
+            {{
+              new Date(msg.created_at).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            }}
+          </div>
+        </div>
+      </transition-group>
+    </div>
+
+    <div class="chat-block-input">
+      <input
+        type="text"
+        v-model="newMessage"
+        :placeholder="t('chat.sendMessage')"
+        @keyup.enter="sendMessage"
+      />
+      <SendIcon
+        class="sendIcon"
+        :size="35"
+        :color="'rgb(0, 162, 255)'"
+        @click="sendMessage"
+      />
+    </div>
+  </div>
+</section>
+
 </template>
 
 <style scoped>
+.chat-buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.chat-buttons .styled-btn {
+  background: linear-gradient(135deg, #00a2ff, #0077cc);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chat-buttons .styled-btn:hover {
+  background: linear-gradient(135deg, #33b6ff, #0095e0);
+  transform: translateY(-2px);
+}
+
 .chat {
   display: flex;
   justify-content: center;

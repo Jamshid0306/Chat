@@ -1,34 +1,33 @@
 <script setup>
-import { ref } from "vue"
-import { useI18n } from "vue-i18n"
-import Chat from "@/views/Chat/Chat.vue"
-import LoginModal from "@/views/LoginModal/LoginModal.vue"
-import Modal from "@/views/Modal/Modal.vue"
-import { useAuthStore } from "@/stores/mainStore"
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import Chat from "@/views/Chat/Chat.vue";
+import LoginModal from "@/views/LoginModal/LoginModal.vue";
+import Modal from "@/views/Modal/Modal.vue";
+import { useAuthStore } from "@/stores/mainStore";
 
-const authStore = useAuthStore()
-const { t } = useI18n()
+const authStore = useAuthStore();
+const { t } = useI18n();
 
-const showLoginModal = ref(authStore.isLoggedIn || true)
-const showModal = ref(false)
-const modalType = ref(false)
-if(authStore.isLoggedIn){
+const showLoginModal = ref(authStore.isLoggedIn || true);
+const showModal = ref(false);
+const modalType = ref(false);
+if (authStore.isLoggedIn) {
   showLoginModal.value = false;
-  
 }
 function closeLoginModal() {
-  showLoginModal.value = false
+  showLoginModal.value = false;
 }
 function closeModal() {
-  showModal.value = false
+  showModal.value = false;
 }
 function openLanguageModal() {
-  modalType.value = false
-  showModal.value = true
+  modalType.value = false;
+  showModal.value = true;
 }
 function openTypeModal() {
-  modalType.value = true
-  showModal.value = true
+  modalType.value = true;
+  showModal.value = true;
 }
 </script>
 
@@ -45,7 +44,10 @@ function openTypeModal() {
 
     <Modal v-if="showModal" :showSelect="modalType" @close="closeModal" />
     <LoginModal v-if="showLoginModal" @close="closeLoginModal" />
-    <Chat />
+    <Chat
+      @openLanguageModal="openLanguageModal"
+      @openTypeModal="openTypeModal"
+    />
   </div>
 </template>
 
@@ -116,5 +118,4 @@ function openTypeModal() {
     transform: scale(0.97);
   }
 }
-
 </style>
