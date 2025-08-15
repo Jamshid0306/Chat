@@ -33,22 +33,14 @@ function openTypeModal() {
 
 <template>
   <div>
-    <div class="button-container">
-      <button class="styled-btn" @click="openLanguageModal">
-        🌐 {{ t("buttons.changeLanguage") }}
-      </button>
-      <!-- <button class="styled-btn" @click="openTypeModal">
+    <!-- <button class="styled-btn" @click="openTypeModal">
         📋 {{ t("buttons.chooseType") }}
       </button> -->
-    </div>
-
-    <Modal v-if="showModal" :showSelect="modalType" @close="closeModal" />
-    <LoginModal v-if="showLoginModal" @close="closeLoginModal" />
-    <Chat
-      @openLanguageModal="openLanguageModal"
-      @openTypeModal="openTypeModal"
-    />
   </div>
+
+  <Modal v-if="showModal" :showSelect="modalType" @close="closeModal" />
+  <LoginModal v-if="showLoginModal" @close="closeLoginModal" />
+  <Chat @openLanguageModal="openLanguageModal" @openTypeModal="openTypeModal" />
 </template>
 
 <style scoped>
