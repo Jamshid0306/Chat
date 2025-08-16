@@ -52,6 +52,7 @@ export const useAdminStore = defineStore("admin", {
         const { data } = await axios.post("/reception/users", userData, {
           headers: this.getAdminHeaders(),
         });
+        this.fetchUsers()
         if(data.generated_password){
           alert(`Userning paroli: ${data.generated_password}`);
         }
